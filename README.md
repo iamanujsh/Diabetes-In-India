@@ -1,8 +1,6 @@
-# Diabetes-In-India
+#Diabetes Data Analysis
 
-
-
-# Diabetes Database Queries
+This project focuses on analyzing a diabetes dataset to uncover key insights and trends using SQL. The dataset contains various features like age, BMI, insulin levels, and glucose concentration, helping identify patterns in diabetes occurrence, risk factors, and patient demographics. By applying SQL queries, we can derive useful insights to understand how different factors contribute to diabetes and the effectiveness of treatments.
 
 ## CREATE DATABASE and Table Selection
 ```sql
@@ -168,4 +166,125 @@ WHERE Family_History_Diabetes = 1 AND Diabetes_Type IN ('Type 1', 'Type 2')
 SELECT Physical_Activity_Level, CAST(AVG(CAST(Family_Income AS DECIMAL(10,2))) AS NUMERIC(10,2)) AS [Avg Family Income]
 FROM diabetes_young_adults_india
 GROUP BY Physical_Activity_Level
+```
+
+## 16. How many individuals have a high cholesterol level (e.g., above 240)?
+```sql
+SELECT COUNT(*) AS [Total Individual]
+FROM diabetes_young_adults_india
+WHERE Cholesterol_Level > 240
+```
+
+## 17. What is the average age of individuals who consume fast food regularly?
+```sql
+SELECT AVG(Age) AS [Average Age]
+FROM diabetes_young_adults_india
+WHERE Dietary_Habits = 'Unhealthy' AND Fast_Food_Intake > 4
+```
+
+## 18. How does alcohol consumption impact the stress levels of individuals with diabetes?
+```sql
+WITH AverageStress AS (
+    SELECT AVG(Stress_Level) AS [ASL_Consume_Alcohol]
+    FROM diabetes_young_adults_india
+    WHERE Diabetes_Type IN ('Type 1', 'Type 2') AND Alcohol_Consumption = 1
+)
+SELECT [ASL_Consume_Alcohol], 
+       (SELECT AVG(Stress_Level) 
+        FROM diabetes_young_adults_india
+        WHERE Diabetes_Type IN ('Type 1', 'Type 2') AND Alcohol_Consumption = 0) AS [ASL_Not_Consume_Alcohol]
+FROM AverageStress
+```
+
+## 19. What is the distribution of BMI levels for individuals with Type 1 vs. Type 2 diabetes?
+```sql
+SELECT Diabetes_Type, 
+       CAST(AVG(BMI) AS NUMERIC(10,2)) AS [Average BMI],
+       MIN(BMI) AS [Minimum BMI],
+       CAST(STDEV(BMI) AS NUMERIC(10,2)) AS [Standard Deviation BMI]
+FROM diabetes_young_adults_india
+WHERE NOT Diabetes_Type = 'None'
+GROUP BY Diabetes_Type
+```
+
+## 20. How many people have sleep hours less than 6 hours and also have high stress levels?
+```sql
+SELECT COUNT(*) AS [Total Count]
+FROM diabetes_young_adults_india
+WHERE Sleep_Hours < 6 AND Stress_Level > 6
+```
+
+## 21. How many people in each region have a sedentary lifestyle and moderate dietary habits?
+```sql
+SELECT Region, COUNT(*) AS [Total Count]
+FROM diabetes_young_adults_india
+WHERE Dietary_Habits LIKE 'moderate' AND Physical_Activity_Level LIKE 'sedentary'
+GROUP BY Region
+```
+
+## 22. What is the average fasting blood sugar for individuals who smoke vs. those who don’t?
+```sql
+SELECT AVG(CASE WHEN Smoking = 1 THEN Fasting_Blood_Sugar END) AS [FBS Who Smoke],
+       AVG(CASE WHEN Smoking = 0 THEN Fasting_Blood_Sugar END) AS [FBS Who Don't Smoke]
+FROM diabetes_young_adults_india
+```
+
+## 23. How many individuals with a low genetic risk score have a higher BMI?
+```sql
+SELECT COUNT(*) AS [Individuals Count]
+FROM diabetes_young_adults_india
+WHERE Genetic_Risk_Score < 3 AND BMI > 28
+```
+
+## 24. How does the smoking status relate to the HbA1c levels of individuals?
+```sql
+SELECT Smoking, AVG(HbA1c) AS [Average HbA1c]
+FROM diabetes_young_adults_india
+GROUP BY Smoking
+```
+
+## 25. What is the average age of people with a family history of diabetes who also have Type 2 diabetes?
+```sql
+SELECT AVG(Age) AS [Average Age]
+FROM diabetes_young_adults_india
+WHERE Family_History_Diabetes = 1 AND Diabetes_Type = 'Type 2'
+```
+
+## 26 What are the common health conditions (fasting blood sugar, HbA1c, cholesterol) for people with moderate dietary habits?
+```sql
+select cast(avg(Fasting_Blood_Sugar)  AS NUMERIC(10,2))   [Average Blood Sugar] , 
+	   cast( avg(HbA1c) AS NUMERIC(10,2))  [Average HbA1c], 
+	  cast( avg(Cholesterol_Level) AS NUMERIC(10,2))  [Average Cholesterol Level]
+from diabetes_young_adults_india
+where Dietary_Habits = 'moderate'
+```
+
+## 27 What percentage of individuals with a BMI over 30 are from the North region?
+```sql
+select CAST((SELECT COUNT(*) FROM diabetes_young_adults_india where BMI > 30 AND Region like 'North' ) * 100.0 
+/ COUNT(*) as Numeric(10,2) ) [% of BMI > 30 In North]
+from diabetes_young_adults_india
+where Region like 'North' 
+```
+## 28 How does alcohol consumption affect the cholesterol levels of individuals?
+```sql
+select
+	avg(case when Alcohol_Consumption = 1 then Cholesterol_Level end) [Chol.. Level Who Drink Alcohol],
+	avg(case when Alcohol_Consumption = 0 then Cholesterol_Level end) [Chol.. Level Who Don't Drink Alcohol]
+from diabetes_young_adults_india
+```
+## 29 What is the distribution of family income for individuals with Type 1 and Type 2 diabetes?
+```sql
+select Diabetes_Type ,
+CAST(avg(CAST(Family_Income AS DECIMAL(10,2))) AS NUMERIC(10,2)) [Average Income] , 
+min(Family_Income) [Min Income] ,
+max(Family_Income) [Maximum Salary]
+from diabetes_young_adults_india
+group by Diabetes_Type
+```
+## 30 What is the average sleep duration for individuals with high stress levels?
+```sql
+select CAST(avg(Sleep_Hours) AS NUMERIC(10,2)) [AVG Sleep]
+from diabetes_young_adults_india
+where Stress_Level > 6
 ```
