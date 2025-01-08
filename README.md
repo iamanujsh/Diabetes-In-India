@@ -1,4 +1,4 @@
-#Diabetes Data Analysis
+# Diabetes Data Analysis
 
 This project focuses on analyzing a diabetes dataset to uncover key insights and trends using SQL. The dataset contains various features like age, BMI, insulin levels, and glucose concentration, helping identify patterns in diabetes occurrence, risk factors, and patient demographics. By applying SQL queries, we can derive useful insights to understand how different factors contribute to diabetes and the effectiveness of treatments.
 
