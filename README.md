@@ -1,6 +1,10 @@
 # Diabetes Data Analysis
 
-This project focuses on analyzing a diabetes dataset to uncover key insights and trends using SQL. The dataset contains various features like age, BMI, insulin levels, and glucose concentration, helping identify patterns in diabetes occurrence, risk factors, and patient demographics. By applying SQL queries, we can derive useful insights to understand how different factors contribute to diabetes and the effectiveness of treatments.
+This project focuses on analyzing a diabetes dataset to uncover key insights and trends using SQL. The dataset contains various features like age, BMI, insulin levels, glucose concentration, physical activity, dietary habits, and family history. The analysis aims to identify patterns in diabetes occurrence, risk factors, and patient demographics. By applying SQL queries, we can derive useful insights to understand how different factors contribute to diabetes and the effectiveness of treatments.
+
+## Dataset Overview
+
+The dataset consists of health-related data for young adults in India, including information about their diabetes status (Type 1, Type 2, or none), physical activity levels, dietary habits, family history, and other health metrics like cholesterol, HbA1c, and fasting blood sugar. The data provides an opportunity to identify trends related to diabetes prevalence, risk factors, and lifestyle choices in the population.
 
 ## CREATE DATABASE and Table Selection
 ```sql
